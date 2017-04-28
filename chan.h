@@ -16,7 +16,8 @@
 
 //channel definition
 struct CHAN(TN) {
-    QUEUE(TN)* qu;
+    QUEUE(TN)* pipe;
+    bool is_lock;
 }
 
 typedef struct CHAN(TN) CHAN(TN);
@@ -40,3 +41,5 @@ void FREE_CHAN(TN)(CHAN(TN)* C);
 //frees channel and its elements which uses allocated memory
 //declaration: void afch_<typename>(ch_<typename>* C);
 void ALLOC_FREE_CHAN(TN)(CHAN(TN)* C);
+
+#include "chan.c"

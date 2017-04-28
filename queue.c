@@ -6,6 +6,7 @@ QUEUE(TN)* MAKE_QUEUE(TN)(){
     QUEUE(TN)* Q=(QUEUE(TN)*)malloc(sizeof(QUEUE(TN)));
     Q->tail=NULL;
     Q->front=NULL;
+    Q->length=0;
     return Q;
 }
 
@@ -22,6 +23,7 @@ void ENQUEUE(TN)(QUEUE(TN)* Q, T value) {
         Q->tail->next=holder;
     }
     Q->tail=holder;
+    ++Q->length;
 }
 
 //removes the oldest value from queue and returns it
@@ -32,6 +34,7 @@ T DEQUEUE(TN)(QUEUE(TN)* Q) {
     T val;
     val=holder->value;
     Q->front=Q->front->next;
+    --Q->length;
     free(holder);
     return val;
 }
@@ -69,7 +72,6 @@ void ALLOC_FREE_QUEUE(TN)(QUEUE(TN)* Q) {
         ALLOC_FREE(TN)(Q->front);
     }
     free(Q);
-
 }
 
 #endif
