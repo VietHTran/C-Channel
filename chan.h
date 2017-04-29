@@ -5,8 +5,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "queue.h"
-
 #define CHAN(TYPE_NAME) CAT(ch_,TYPE_NAME)
 #define ADD_CHAN(TYPE_NAME) CAT(ach_,TYPE_NAME)
 #define ALLOC_FREE_CHAN(TYPE_NAME) CAT(afch_,TYPE_NAME)
@@ -16,15 +14,15 @@
 
 //channel definition
 struct CHAN(TN) {
-    QUEUE(TN)* pipe;
-    bool is_lock;
+    int* fd;
+    int size;
 }
 
 typedef struct CHAN(TN) CHAN(TN);
 
 //creates a new storage for channel data structure in the heap memory and returns its pointer
-//declaration: ch_<typename>* mkch_<typname>(); 
-CHAN(TN)* MAKE_CHAN(TN)();
+//declaration: ch_<typename>* mkch_<typname>(int size); 
+CHAN(TN)* MAKE_CHAN(TN)(int size);
 
 //pushes new value into channel pipe
 //declaration: void ach_<typename>(ch_<typename>* C, <type> value);
