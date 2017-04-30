@@ -14,8 +14,8 @@
 
 //channel definition
 struct CHAN(TN) {
-    int* fd;
-    int size;
+    int fd[2];
+    int size,current_size;
 }
 
 typedef struct CHAN(TN) CHAN(TN);

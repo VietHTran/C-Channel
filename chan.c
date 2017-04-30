@@ -10,32 +10,49 @@
 //declaration: ch_<typename>* mkch_<typname>(int size); 
 CHAN(TN)* MAKE_CHAN(TN)(int size) {
     CHAN(TN)* new_chan=(CHAN(TN)*)malloc(sizeof(CHAN(TN)));
-    new_chan->fd=(int*)malloc(sizeof(int)*2);
     if (pipe(new_chan->fd)<0) {
         printf("Error creating pipe");
-        free(new_chan->fd);
         free(new_chan);
         exit(1);    
     }
     new_chan->size=size;
+    new_chan->current_size=0;
+    return new_chan;
 }
 
 //pushes new value into channel pipe
 //declaration: void ach_<typename>(ch_<typename>* C, <type> value);
 void ADD_CHAN(TN)(CHAN(TN)* C, T value) {
+    while (C->size==C->current_size) {}
+    ++C->current_size;
+    write(C->fd[1],&value,sizeof(T));
 }
 
 //removes the oldest value from channel and returns it
 //declaration: <type> pch_<typename>(ch_<typename>* C);
 T POP_CHAN(TN)(CHAN(TN)* C) {
+    T value;
+    read(C->fd[0],&value,sizeof(T));
+    --C->current_size;
+    return value;
 }
 
 //frees channel 
 //declaration: void fch_<typename>(ch_<typename>* C);
 void FREE_CHAN(TN)(CHAN(TN)* C) {
+    int len=C->current_size;
+    for (int i=0;i<len;++i) {
+        POP_CHAN(TN)(C);
+    }
+    free(C);
 }
 
 //frees channel and its elements which uses allocated memory
 //declaration: void afch_<typename>(ch_<typename>* C);
 void ALLOC_FREE_CHAN(TN)(CHAN(TN)* C) {
+    int len=C->current_size;
+    for (int i=0;i<len;++i) {
+        free(POP_CHAN(TN)(C));
+    }
+    free(C);
 }
