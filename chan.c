@@ -8,6 +8,11 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#ifdef T
+#ifdef TN
+
+#include "chan.h"
+
 //Private methods
 
 #define initsem(SEMID,I,VAL) do {                           \
@@ -93,3 +98,6 @@ void FREE_CHAN(TN)(CHAN(TN)* C) {
 #undef initsem
 #undef P
 #undef V
+
+#endif
+#endif

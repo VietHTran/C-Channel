@@ -48,4 +48,3 @@ T POP_CHAN(TN)(CHAN(TN)* C);
 //declaration: void fch_<typename>(ch_<typename>* C);
 void FREE_CHAN(TN)(CHAN(TN)* C);
 
-#include "chan.c"
